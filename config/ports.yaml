@@ -1,0 +1,10 @@
+services:
+  frontend:
+    dev: 5173
+    prod: 3000
+  backend: 8000
+  ollama: 11434
+  websocket: 8000
+  monitor: 8001
+  database: 5432  # If using PostgreSQL
+  redis: 6379     # If using Redis

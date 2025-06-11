@@ -1,0 +1,86 @@
+[
+  {
+    "id": "0a1dde3a-140e-4079-9031-8e3c0decd700",
+    "status": "queued",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "initializing",
+    "active_models": [],
+    "created_at": "2025-06-08 22:41:25.911537",
+    "eta_seconds": null,
+    "error_message": null
+  },
+  {
+    "id": "4d98b309-b649-4048-8bfc-b6379ad22330",
+    "status": "cancelled",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "cancelled",
+    "active_models": [],
+    "created_at": "2025-06-08 22:38:20.458037",
+    "eta_seconds": null,
+    "error_message": null
+  },
+  {
+    "id": "d986f58d-94e5-42d1-a701-826fa5a26be3",
+    "status": "cancelled",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "cancelled",
+    "active_models": [],
+    "created_at": "2025-06-08 22:33:39.465537",
+    "eta_seconds": null,
+    "error_message": null
+  },
+  {
+    "id": "dce36bd9-3235-462a-b5ce-db944788497a",
+    "status": "cancelled",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "cancelled",
+    "active_models": [],
+    "created_at": "2025-06-08 22:19:47.101013",
+    "eta_seconds": null,
+    "error_message": null
+  },
+  {
+    "id": "adcccb0b-164c-4c7d-a6f2-d4c7b0decde9",
+    "status": "cancelled",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "cancelled",
+    "active_models": [],
+    "created_at": "2025-06-08 22:09:10.220239",
+    "eta_seconds": null,
+    "error_message": null
+  },
+  {
+    "id": "ee26646e-04cc-4e51-9222-3c01bacd756d",
+    "status": "cancelled",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "cancelled",
+    "active_models": [],
+    "created_at": "2025-06-08 22:05:53.355944",
+    "eta_seconds": null,
+    "error_message": null
+  },
+  {
+    "id": "86e660f5-3576-4ab6-a83c-24743f4fb05b",
+    "status": "cancelled",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "cancelled",
+    "active_models": [],
+    "created_at": "2025-06-08 21:48:25.421665",
+    "eta_seconds": null,
+    "error_message": null
+  }
+]

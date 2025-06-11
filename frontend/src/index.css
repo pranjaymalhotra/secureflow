@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #111827;
+    color: #f9fafb;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #4b5563;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6b7280;
+  }
+}
+
+@layer components {
+  /* Button variants */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply btn bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800;
+  }
+
+  .btn-secondary {
+    @apply btn bg-gray-600 text-white hover:bg-gray-700 active:bg-gray-800;
+  }
+
+  .btn-danger {
+    @apply btn bg-red-600 text-white hover:bg-red-700 active:bg-red-800;
+  }
+
+  .btn-ghost {
+    @apply btn text-gray-300 hover:bg-gray-800 hover:text-white;
+  }
+
+  .btn-sm {
+    @apply h-8 px-3 text-sm;
+  }
+
+  .btn-md {
+    @apply h-10 px-4 text-sm;
+  }
+
+  .btn-lg {
+    @apply h-12 px-6 text-base;
+  }
+
+  /* Input styles */
+  .input {
+    @apply flex h-10 w-full rounded-lg border border-gray-600 bg-gray-800 px-3 py-2 text-sm text-white placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Card styles */
+  .card {
+    @apply rounded-lg border border-gray-700 bg-gray-800 p-6 shadow-lg;
+  }
+
+  .card-header {
+    @apply mb-4 border-b border-gray-700 pb-4;
+  }
+
+  .card-title {
+    @apply text-lg font-semibold text-white;
+  }
+
+  .card-description {
+    @apply text-sm text-gray-400;
+  }
+
+  /* Alert styles */
+  .alert {
+    @apply relative w-full rounded-lg border p-4;
+  }
+
+  .alert-info {
+    @apply alert border-blue-600 bg-blue-950 text-blue-100;
+  }
+
+  .alert-success {
+    @apply alert border-green-600 bg-green-950 text-green-100;
+  }
+
+  .alert-warning {
+    @apply alert border-yellow-600 bg-yellow-950 text-yellow-100;
+  }
+
+  .alert-error {
+    @apply alert border-red-600 bg-red-950 text-red-100;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2 py-1 text-xs font-medium;
+  }
+
+  .badge-critical {
+    @apply badge bg-red-900 text-red-100;
+  }
+
+  .badge-high {
+    @apply badge bg-orange-900 text-orange-100;
+  }
+
+  .badge-medium {
+    @apply badge bg-yellow-900 text-yellow-100;
+  }
+
+  .badge-low {
+    @apply badge bg-blue-900 text-blue-100;
+  }
+
+  .badge-info {
+    @apply badge bg-gray-700 text-gray-100;
+  }
+
+  /* Progress bar */
+  .progress {
+    @apply relative h-2 w-full overflow-hidden rounded-full bg-gray-700;
+  }
+
+  .progress-bar {
+    @apply h-full bg-blue-600 transition-all duration-300 ease-in-out;
+  }
+
+  /* Code syntax highlighting */
+  .code-block {
+    @apply rounded-lg bg-gray-900 p-4 overflow-x-auto;
+  }
+
+  .code-block pre {
+    @apply m-0 text-sm;
+  }
+
+  .code-block code {
+    @apply font-mono text-gray-100;
+  }
+
+  /* Markdown content */
+  .markdown-content h1,
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4,
+  .markdown-content h5,
+  .markdown-content h6 {
+    @apply font-semibold text-white mb-4;
+  }
+
+  .markdown-content h1 {
+    @apply text-2xl;
+  }
+
+  .markdown-content h2 {
+    @apply text-xl;
+  }
+
+  .markdown-content h3 {
+    @apply text-lg;
+  }
+
+  .markdown-content p {
+    @apply mb-4 text-gray-300;
+  }
+
+  .markdown-content ul,
+  .markdown-content ol {
+    @apply mb-4 ml-6 text-gray-300;
+  }
+
+  .markdown-content li {
+    @apply mb-1;
+  }
+
+  .markdown-content pre {
+    @apply mb-4 rounded-lg bg-gray-900 p-4 overflow-x-auto;
+  }
+
+  .markdown-content code {
+    @apply font-mono text-sm;
+  }
+
+  .markdown-content table {
+    @apply w-full border-collapse border border-gray-600 mb-4;
+  }
+
+  .markdown-content th,
+  .markdown-content td {
+    @apply border border-gray-600 px-4 py-2 text-left;
+  }
+
+  .markdown-content th {
+    @apply bg-gray-700 font-semibold text-white;
+  }
+
+  .markdown-content td {
+    @apply text-gray-300;
+  }
+
+  /* Animation utilities */
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

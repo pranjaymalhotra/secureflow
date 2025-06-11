@@ -1,0 +1,14 @@
+[
+  {
+    "id": "86e660f5-3576-4ab6-a83c-24743f4fb05b",
+    "status": "running",
+    "progress": 0.0,
+    "files_total": 1,
+    "files_scanned": 0,
+    "current_stage": "preparing_analysis",
+    "active_models": [],
+    "created_at": "2025-06-08 21:48:25.421665",
+    "eta_seconds": null,
+    "error_message": null
+  }
+]

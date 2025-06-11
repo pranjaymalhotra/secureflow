@@ -1,0 +1,448 @@
+# SecureFlow Enhanced LLM Models Configuration
+# Improved configuration for better accuracy and reduced false positives
+
+# Primary Models Configuration
+primary_model: "deepseek-coder-v2:16b"
+
+# Enhanced Analysis Quality Thresholds
+thresholds:
+  confidence_minimum: 0.45  # Increased from 0.30 to reduce false positives
+  consensus_required: 2     # Minimum models required for high-confidence findings
+  similarity_threshold: 0.85 # For deduplication
+  max_line_distance: 5     # Maximum line distance for grouping findings
+  severity_weights:
+    critical: 1.0
+    high: 0.8
+    medium: 0.6
+    low: 0.4
+    info: 0.2
+
+# Worker Models - Optimized weights and specializations
+worker_models:
+  # Primary Code Analysis Models
+  - name: "qwen2.5-coder:7b"
+    type: "ollama"
+    weight: 1.2  # Increased weight for proven performance
+    enabled: true
+    description: "qwen2.5-coder:7b - Excellent for code analysis"
+    specializations: ["python", "javascript", "web_security", "xss", "csrf", "authentication","c", "cpp", "memory_safety", "buffer_overflow", "static_analysis","sql_injection", "command_injection", "complex_logic", "business_logic"]
+    timeout: 800
+    retries: 2
+    
+  - name: "codellama:7b"
+    type: "ollama"
+    weight: 1.1  # Slightly increased
+    enabled: true
+    description: "Code Llama 7B - Strong code understanding"
+    specializations: ["c", "cpp", "memory_safety", "buffer_overflow", "static_analysis"]
+    timeout: 800
+    retries: 2
+    
+  - name: "deepseek-coder-v2:16b"
+    type: "ollama"
+    weight: 1.3  # Increased for better model
+    enabled: true
+    description: "Deepseek Coder v2 16B - Advanced analysis"
+    specializations: ["python", "javascript", "web_security", "xss", "csrf", "authentication","c", "cpp", "memory_safety", "buffer_overflow", "static_analysis","sql_injection", "command_injection", "complex_logic", "business_logic"]
+    timeout: 800
+    retries: 2
+
+  # Specialized Models
+  - name: "codegemma:7b"
+    type: "ollama"
+    weight: 1
+    enabled: true
+    description: "CodeGemma 7B - Cryptography and validation specialist"
+    specializations: ["crypto", "data_validation", "input_sanitization", "secure_coding"]
+    timeout: 240
+    retries: 2
+
+  - name: "gemma2:2b"
+    type: "ollama"
+    weight: 0.7  # Slightly increased for faster processing
+    enabled: true
+    description: "Gemma2 2B - Quick scan specialist"
+    specializations: ["quick_scan", "common_vulnerabilities", "code_patterns"]
+    timeout: 180
+    retries: 2
+    
+  - name: "deepseek-coder:1.3b"
+    type: "ollama"
+    weight: 0.8  # Increased for better coverage
+    enabled: true
+    description: "Deepseek Coder 1.3B - Lightweight but effective"
+    specializations: ["code_analysis", "security_patterns", "best_practices"]
+    timeout: 180
+    retries: 2
+
+  # Cloud API Models (Premium Analysis)
+  - name: "gemini-1.5-flash"
+    type: "gemini"
+    weight: 1.3  # Higher weight for cloud models
+    enabled: false
+    api_key_env: "GEMINI_API_KEY"
+    description: "Google Gemini 1.5 Flash - Advanced threat detection"
+    specializations: ["advanced_threats", "complex_vulnerabilities", "enterprise_security", "architecture"]
+    timeout: 120
+    retries: 1
+    
+  - name: "gpt-4-turbo"
+    type: "openai"
+    weight: 1.2
+    enabled: false
+    api_key_env: "OPENAI_API_KEY"
+    description: "GPT-4 Turbo - Premium security analysis"
+    specializations: ["sophisticated_attacks", "zero_day_detection", "threat_modeling", "secure_design"]
+    timeout: 120
+    retries: 1
+
+# Sentinel Model Configuration
+sentinel_model:
+  name: "DeepSeek-Coder-v2-16B"
+  type: "ollama"
+  weight: 1.0
+  timeout: 800
+  retries: 3
+  description: "Primary model for final analysis and report generation"
+  fallback_models: ["codellama:7b", "qwen2.5-coder:7b"]
+
+# Language-Specific Analysis Settings
+language_configs:
+  python:
+    priority_patterns: ["sql_injection", "command_injection", "pickle_deserialization", "eval_injection"]
+    exclude_patterns: ["test_", "_test.py", "conftest.py", "pytest", "__pycache__"]
+    confidence_boost: 0.1
+    max_file_size_mb: 5
+    
+  javascript:
+    priority_patterns: ["xss", "prototype_pollution", "eval_injection", "dom_manipulation"]
+    exclude_patterns: ["test/", "spec/", ".min.js", "node_modules/", "dist/"]
+    confidence_boost: 0.1
+    max_file_size_mb: 3
+    
+  typescript:
+    priority_patterns: ["xss", "type_confusion", "injection", "unsafe_any"]
+    exclude_patterns: ["test/", "spec/", ".d.ts", "node_modules/", "dist/"]
+    confidence_boost: 0.05
+    max_file_size_mb: 3
+    
+  java:
+    priority_patterns: ["sql_injection", "xml_injection", "deserialization", "path_traversal"]
+    exclude_patterns: ["Test.java", "test/", "target/", ".class"]
+    confidence_boost: 0.1
+    max_file_size_mb: 8
+    
+  php:
+    priority_patterns: ["sql_injection", "file_inclusion", "xss", "code_injection"]
+    exclude_patterns: ["test/", "vendor/", "cache/"]
+    confidence_boost: 0.1
+    max_file_size_mb: 5
+    
+  c:
+    priority_patterns: ["buffer_overflow", "memory_leak", "format_string", "use_after_free"]
+    exclude_patterns: ["test/", "_test.c", "build/"]
+    confidence_boost: 0.15
+    max_file_size_mb: 10
+    
+  cpp:
+    priority_patterns: ["buffer_overflow", "use_after_free", "memory_leak", "double_free"]
+    exclude_patterns: ["test/", "_test.cpp", "gtest", "build/"]
+    confidence_boost: 0.15
+    max_file_size_mb: 10
+    
+  go:
+    priority_patterns: ["sql_injection", "path_traversal", "race_condition"]
+    exclude_patterns: ["_test.go", "test/", "vendor/"]
+    confidence_boost: 0.1
+    max_file_size_mb: 5
+
+# Enhanced File Handling
+file_processing:
+  # Maximum file size for analysis (in MB)
+  max_file_size_mb: 10
+  skip_binary_files: true
+  
+  # Global exclusion patterns (high priority)
+  global_excludes:
+    - "node_modules/"
+    - ".git/"
+    - "venv/"
+    - ".venv/"
+    - "__pycache__/"
+    - "dist/"
+    - "build/"
+    - "target/"
+    - ".pytest_cache/"
+    - "coverage/"
+    - "*.log"
+    - "*.tmp"
+    - "*.cache"
+    - "*.min.js"
+    - "*.min.css"
+    - "*.map"
+    - "*lock*"
+    - "package-lock.json"
+  
+  # Files that should never be flagged for code vulnerabilities
+  config_only_files:
+    - "*.json"
+    - "*.yaml"
+    - "*.yml"
+    - "*.xml"
+    - "*.toml"
+    - "*.ini"
+    - "*.cfg"
+    - "*.md"
+    - "*.txt"
+    - "*.rst"
+  
+  # Files requiring special security analysis
+  special_handling:
+    "package.json": "dependency_check"
+    "requirements.txt": "dependency_check"
+    "Gemfile": "dependency_check"
+    "pom.xml": "dependency_check"
+    "Dockerfile": "container_security"
+    "docker-compose.yml": "container_security"
+    ".env": "secrets_check"
+    "web.config": "server_config_check"
+    "nginx.conf": "server_config_check"
+  
+  # Enhanced supported languages
+  supported_languages:
+    - python
+    - javascript
+    - typescript
+    - java
+    - cpp
+    - c
+    - csharp
+    - php
+    - ruby
+    - go
+    - rust
+    - kotlin
+    - swift
+    - scala
+    - shell
+    - powershell
+
+# Enhanced Runtime Configuration
+runtime_config:
+  ollama:
+    base_url: "http://localhost:11434"
+    timeout: 300
+    num_ctx: 4096
+    temperature: 0.3  # Low for consistent analysis
+    top_p: 0.8
+    repeat_penalty: 1.1
+    
+  gemini:
+    timeout: 120
+    temperature: 0.1
+    max_tokens: 4096
+    safety_settings: "block_none"  # For security analysis
+    
+  openai:
+    timeout: 120
+    temperature: 0.1
+    max_tokens: 4096
+    model_version: "gpt-4-turbo-preview"
+
+# Enhanced Vulnerability Categories with Business Impact
+vulnerability_categories:
+  # Critical Security Issues (Immediate Action Required)
+  injection:
+    weight: 1.0
+    business_impact: "System compromise, data breach, financial loss"
+    file_types: [".py", ".js", ".php", ".java", ".rb", ".go"]
+    subcategories: ["sql_injection", "command_injection", "ldap_injection", "xpath_injection", "nosql_injection"]
+    
+  authentication:
+    weight: 0.95
+    business_impact: "Unauthorized access, account takeover, compliance violations"
+    file_types: [".py", ".js", ".php", ".java", ".rb", ".go"]
+    subcategories: ["weak_authentication", "session_management", "password_issues", "mfa_bypass"]
+    
+  authorization:
+    weight: 0.9
+    business_impact: "Privilege escalation, unauthorized data access"
+    file_types: [".py", ".js", ".php", ".java", ".rb", ".go"]
+    subcategories: ["access_control", "privilege_escalation", "insecure_direct_references", "idor"]
+    
+  data_exposure:
+    weight: 0.9
+    business_impact: "Data breach, regulatory fines, reputation damage"
+    file_types: ["*"]
+    subcategories: ["sensitive_data_exposure", "information_disclosure", "data_leakage", "pii_exposure"]
+    
+  # High Security Issues (This Week)
+  cryptography:
+    weight: 0.85
+    business_impact: "Data encryption compromise, regulatory compliance issues"
+    file_types: [".py", ".js", ".java", ".cs", ".go", ".rs"]
+    subcategories: ["weak_crypto", "insecure_random", "key_management", "crypto_misuse"]
+    
+  deserialization:
+    weight: 0.8
+    business_impact: "Remote code execution, system compromise"
+    file_types: [".py", ".js", ".php", ".java", ".rb"]
+    subcategories: ["insecure_deserialization", "object_injection", "pickle_injection"]
+    
+  # Medium Security Issues (Next Sprint)
+  input_validation:
+    weight: 0.7
+    business_impact: "User account compromise, data manipulation"
+    file_types: [".py", ".js", ".php", ".java", ".rb"]
+    subcategories: ["xss", "path_traversal", "file_upload", "input_injection"]
+    
+  configuration:
+    weight: 0.65
+    business_impact: "System exposure, information disclosure"
+    file_types: ["*"]
+    subcategories: ["security_misconfiguration", "default_credentials", "debug_mode", "cors_misconfiguration"]
+    
+  # Code Quality & Dependencies (Future Releases)
+  code_quality:
+    weight: 0.5
+    business_impact: "Maintainability issues, potential security debt"
+    file_types: ["*"]
+    subcategories: ["code_smells", "maintainability", "performance", "complexity"]
+    
+  dependencies:
+    weight: 0.6
+    business_impact: "Third-party vulnerabilities, supply chain attacks"
+    file_types: ["*"]
+    subcategories: ["vulnerable_dependencies", "outdated_libraries", "license_issues"]
+
+# Enhanced Analysis Pipeline Settings
+pipeline:
+  max_workers: 4
+  shard_size: 20  # Reduced for better balance
+  memory_limit_mb: 2048  # Per worker
+  timeout_minutes: 30
+  
+  # Advanced deduplication settings
+  deduplication:
+    enabled: true
+    similarity_threshold: 0.85
+    max_line_distance: 10
+    semantic_clustering: true
+    category_grouping: true
+  
+  # False positive reduction
+  false_positive_reduction:
+    enabled: true
+    context_analysis: true
+    pattern_validation: true
+    confidence_filtering: true
+    file_type_validation: true
+
+# Enhanced Reporting Settings
+report_settings:
+  formats: ["markdown", "json", "executive_summary"]
+  max_findings_per_category: 15  # Reduced for better readability
+  include_code_snippets: true
+  snippet_context_lines: 3
+  group_similar_findings: true
+  include_remediation: true
+  include_references: true
+  show_confidence_scores: true
+  show_model_attribution: true
+  include_business_impact: true
+  generate_executive_summary: true
+  
+  # Report organization
+  organization:
+    group_by_severity: true
+    group_by_file: false
+    sort_by_priority: true
+    include_quick_wins: true
+
+# Quality Assurance Settings
+quality_assurance:
+  min_final_confidence: 0.45
+  require_consensus_for_low_confidence: true
+  max_false_positive_rate: 0.15
+  post_processing_validation: true
+
+  enhanced_filtering:
+    enabled: true
+    filter_config_file_code_vulns: true  # No SQL injection in package.json
+    filter_static_html_xss: true         # No XSS in static HTML
+    filter_meta_charset_secrets: true    # Meta charset is not a secret
+    filter_string_comparison_crypto: true # String ops are not crypto
+  
+  # Model agreement thresholds
+  consensus_thresholds:
+    critical_findings: 2  # Require 2+ models for critical findings
+    high_findings: 1      # Allow single model for high findings
+    medium_findings: 1    # Allow single model for medium findings
+
+# Performance Optimization
+performance:
+  max_parallel_workers: 3  # Reduced for better quality control
+  shard_size: 15          # Smaller shards for better accuracy
+  memory_limit_mb: 2048
+  timeout_minutes: 200 
+  model_load_timeout: 300
+  request_timeout: 120
+  max_retries: 2
+  retry_delay: 5
+  max_memory_per_worker: "2GB"
+  cleanup_interval: 50  # files processed before cleanup
+  enable_result_validation: true
+  validation_threshold: 0.45
+  
+  # Caching settings
+  enable_model_caching: true
+  enable_result_caching: false  # Disabled for security analysis
+  
+  # Resource monitoring
+  monitor_resources: true
+  cpu_threshold_percent: 90
+  memory_threshold_percent: 85
+
+# Logging and Monitoring
+logging:
+  level: "INFO"
+  include_model_responses: false  # Security: don't log full responses
+  include_timing_metrics: true
+  log_false_positive_candidates: true
+  log_performance_metrics: true
+  
+  # File locations
+  log_file: "logs/secureflow.log"
+  error_log_file: "logs/secureflow_errors.log"
+  performance_log_file: "logs/performance.log"
+
+# Environment Configuration
+environment:
+  required_env_vars:
+    optional:
+      - "OPENAI_API_KEY"
+      - "GEMINI_API_KEY"
+      - "ANTHROPIC_API_KEY"
+    required: []
+  
+  # Model availability fallbacks
+  fallback_strategy:
+    if_no_cloud_models: "use_all_local"
+    if_model_unavailable: "skip_and_continue"
+    min_models_required: 2
+
+# Feature Flags for Advanced Capabilities
+features:
+  enhanced_deduplication: true
+  context_aware_filtering: true
+  business_impact_analysis: true
+  semantic_analysis: false      # Experimental
+  dataflow_analysis: false     # Experimental
+  threat_modeling: false       # Future feature
+  compliance_mapping: true     # Map to frameworks like OWASP, NIST
+  
+  # Experimental AI features
+  experimental:
+    llm_ensembling: true
+    adaptive_confidence: false
+    self_correction: false
